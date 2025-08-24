@@ -9,20 +9,39 @@
   (int (inc (/ (- midi-num 24) 12))))
 
 (defn midi-to-notes [midi-num]
-  (str (get {0 "c"
-             1 "c#"
-             2 "d"
-             3 "d#"
-             4 "e"
-             5 "f"
-             6 "f#"
-             7 "g"
-             8 "g#"
-             9 "a"
+  (str (get {0  "c"
+             1  "c#"
+             2  "d"
+             3  "d#"
+             4  "e"
+             5  "f"
+             6  "f#"
+             7  "g"
+             8  "g#"
+             9  "a"
              10 "a#"
              11 "b"}
             (mod (- midi-num 24) 12))
        (midi-to-octave midi-num)))
+
+(defn note-to-midi [note]
+  (let [octave (:octave note)
+        note-name (name (:note note))
+        accidental (get {:sharp "#" :flat "b"} (:accidental note))
+        index (get {"c"  0
+                    "c#" 1
+                    "d"  2
+                    "d#" 3
+                    "e"  4
+                    "f"  5
+                    "f#" 6
+                    "g"  7
+                    "g#" 8
+                    "a"  9
+                    "a#" 10
+                    "b"  11} (str note-name accidental))]
+    (+ index (+ (* octave 12) 12))))
+
 
 (def my-receiver (reify Receiver
                    (send [this mm timeStamp]
@@ -34,7 +53,7 @@
                            (swap! notes assoc (.getData1 sm) :off)))))))
 
 (defn list-devices []
-      (map #(MidiSystem/getMidiDevice %) (MidiSystem/getMidiDeviceInfo)))
+  (map #(MidiSystem/getMidiDevice %) (MidiSystem/getMidiDeviceInfo)))
 
 (defn is-device-input [^MidiDevice dev]
   (or (= -1 (.getMaxTransmitters dev)) (> (.getMaxTransmitters dev) 0)))
@@ -71,3 +90,7 @@
 
 (defn get-notes-state []
   (map #(parse-note (midi-to-notes %)) (keys (filter (fn [[k v]] (= :on v)) @notes))))
+
+(defn get-open-device-name []
+  (when (some? (:device @context))
+    (.getName (.getDeviceInfo (:device @context)))))

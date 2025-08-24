@@ -48,7 +48,7 @@ class Api {
     return "ok";
   }
 
-  static Future<List<Object>> pollNotes() async {
+  static Future<List<MidiNote>> pollNotes() async {
     final resp = await r.retry(
       () => http
           .get(Uri.parse('http://localhost:5050/api/poll/notes'))
@@ -61,6 +61,25 @@ class Api {
     }
 
     Iterable list = json.decode(resp.body);
-    return List<MidiNote>.from(list.map((x) => MidiNote.fromJson(x))); // todo
+    return List<MidiNote>.from(list.map((x) => MidiNote.fromJson(x)));
+  }
+
+  static Future<MidiNote?> getRandomNote(String lower, String upper) async {
+    final resp = await r.retry(
+      () => http
+          .get(
+            Uri.parse(
+              'http://localhost:5050/api/random-note?lower=$lower&upper=$upper',
+            ),
+          )
+          .timeout(Duration(seconds: 5)),
+      retryIf: (e) => e is SocketException || e is TimeoutException,
+    );
+
+    if (resp.statusCode != 200) {
+      return null;
+    }
+
+    return MidiNote.fromJson(json.decode(resp.body));
   }
 }

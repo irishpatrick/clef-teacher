@@ -11,6 +11,17 @@ class MidiNote {
     required this.octave,
   });
 
+  @override
+  bool operator ==(Object other) {
+    if (other is! MidiNote) {
+      return false;
+    }
+
+    return this.name == other.name &&
+        this.accidental == other.accidental &&
+        this.octave == other.octave;
+  }
+
   factory MidiNote.fromJson(Map<String, dynamic> json) {
     final name = json['note'];
     if (name is! String) {

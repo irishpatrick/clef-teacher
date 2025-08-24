@@ -39,9 +39,7 @@ class _DeviceChooserState extends State<DeviceChooser> {
         onChanged: (value) {
           setState(() {
             _current = value ?? 'unknown';
-            Api.connectDevice(
-              _current,
-            ).then((ok) => print(ok), onError: (err) => print(err));
+            Api.connectDevice(_current).then((ok) {}, onError: (err) {});
           });
         },
       );

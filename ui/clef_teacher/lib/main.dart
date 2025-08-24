@@ -1,6 +1,6 @@
 import 'package:clef_teacher/device_chooser.dart';
+import 'package:clef_teacher/quiz.dart';
 import 'package:flutter/material.dart';
-import 'package:clef_teacher/piano/piano.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,33 +43,7 @@ class MyApp extends StatelessWidget {
           // the App.build method, and use it to set our appbar title.
           title: Text("Title"),
         ),
-        body: Center(
-          child: Stack(
-            children: [
-              SizedBox(
-                width: 600,
-                height: 200,
-                child: ClefImage(
-                  size: Size.infinite,
-                  clef: Clef.Bass,
-                  noteRange: NoteRange.forClefs([Clef.Treble, Clef.Bass]),
-                  noteImages: [
-                    NoteImage(
-                      notePosition: NotePosition(
-                        note: Note.C,
-                        octave: 4,
-                        accidental: Accidental.None,
-                      ),
-                    ),
-                  ],
-                  clefColor: Colors.black,
-                  noteColor: Colors.black,
-                ),
-              ),
-              DeviceChooser(),
-            ],
-          ),
-        ),
+        body: Center(child: Stack(children: [Quiz(), DeviceChooser()])),
         //   child:
         // ),
       ),
