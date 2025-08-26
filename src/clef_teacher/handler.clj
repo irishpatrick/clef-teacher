@@ -8,7 +8,6 @@
 (defn get-devices [req]
   (let [names (midi/list-device-names (midi/list-input-devices (midi/list-devices)))
         sorted-names (sort (fn [a b] (= a (midi/get-open-device-name))) names)]
-    (println sorted-names)
     {:headers {"Content-Type" "application/json"}
      :body    (json/write-str sorted-names)}))
 

@@ -33,14 +33,22 @@ class _QuizState extends State<Quiz> {
           if (notes.isEmpty) {
             timer.cancel();
             Timer(Duration(seconds: 1), () {
-              Api.getRandomNote("f2", "e4").then((value) {
+              if (_answer == _guess) {
+                Api.getRandomNote("f2", "e4").then((value) {
+                  setState(() {
+                    _answer = value;
+                    _guess = null;
+                    _startPolling();
+                    _waitingForGuess = true;
+                  });
+                });
+              } else {
                 setState(() {
                   _guess = null;
-                  _answer = value;
                   _startPolling();
                   _waitingForGuess = true;
                 });
-              });
+              }
             });
           }
         }

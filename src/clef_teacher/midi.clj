@@ -78,8 +78,6 @@
   (.open device)
   (.setReceiver (.getTransmitter device) my-receiver))
 
-(open-device (get-device-by-name (list-input-devices (list-devices)) "M2 [hw:4,0,0]"))
-
 (defn parse-note [note-str]
   (let [note-name (keyword (string/lower-case (str (get note-str 0))))
         mod-1 (get note-str 1)

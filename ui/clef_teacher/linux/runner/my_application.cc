@@ -7,6 +7,16 @@
 
 #include "flutter/generated_plugin_registrant.h"
 
+#include <cassert>
+#include <cstdlib>
+#include <errno.h>
+#include <linux/limits.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+static int backend_pid = -1;
+
 struct _MyApplication {
   GtkApplication parent_instance;
   char** dart_entrypoint_arguments;
@@ -101,6 +111,28 @@ static void my_application_startup(GApplication* application) {
 
   // Perform any actions required at application startup.
 
+  backend_pid = fork();
+  if (backend_pid == 0) // child
+  {
+    char pwd[4096];
+    readlink("/proc/self/exe", pwd, 4096);
+    int last_slash = strrchr(pwd, '/') - pwd;
+    strncpy(pwd, pwd, last_slash);
+    pwd[last_slash + 1] = 0;
+    char runner[] = "/usr/bin/java";
+    char jar[4096];
+    sprintf(jar, "%s/backend.jar", pwd);
+    char flag[] = "-jar";
+    char *newargv[] = {runner, flag, jar, nullptr};
+    if (execve(runner, newargv, environ) < 0)
+    {
+      printf("error: cannot start backend - %s\n", strerror(errno));
+      exit(1);
+    }
+
+    exit(0);
+  }
+
   G_APPLICATION_CLASS(my_application_parent_class)->startup(application);
 }
 
@@ -109,6 +141,29 @@ static void my_application_shutdown(GApplication* application) {
   //MyApplication* self = MY_APPLICATION(object);
 
   // Perform any actions required at application shutdown.
+
+  if (backend_pid == -1)
+  {
+    printf("error: backend not running\n");
+    G_APPLICATION_CLASS(my_application_parent_class)->shutdown(application);
+    exit(1);
+  }
+
+  if (kill(backend_pid, SIGTERM) < 0)
+  {
+    assert(errno != EINVAL);
+
+    printf("error: cannot kill backend task - %s\n", strerror(errno));
+    G_APPLICATION_CLASS(my_application_parent_class)->shutdown(application);
+    exit(1);
+  }
+  int backendStatus;
+  if (waitpid(backend_pid, &backendStatus, 0) < 0)
+  {
+    printf("error: cannot wait for backend to stop - %s\n", strerror(errno));
+    G_APPLICATION_CLASS(my_application_parent_class)->shutdown(application);
+    exit(1);
+  }
 
   G_APPLICATION_CLASS(my_application_parent_class)->shutdown(application);
 }
