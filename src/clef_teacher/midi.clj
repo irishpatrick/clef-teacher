@@ -1,5 +1,5 @@
 (ns clef-teacher.midi
-  (:import (javax.sound.midi MidiDevice MidiMessage MidiSystem Receiver ShortMessage))
+  (:import (javax.sound.midi MidiDevice MidiSystem Receiver ShortMessage))
   (:require [clojure.string :as string]))
 
 (def context (atom {}))
