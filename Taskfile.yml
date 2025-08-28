@@ -13,9 +13,9 @@ tasks:
 
   bundle-linux:
     cmds:
-      - rm -rf ./artifacts/*  ; mkdir -p artifacts
+      - rm -rf ./artifacts/*  ; mkdir -p artifacts/clef-teacher
       - cd ui/clef_teacher ; flutter build linux --release
       - lein uberjar
-      - cp target/clef-teacher-0.1.0-SNAPSHOT-standalone.jar ./artifacts/backend.jar
-      - cp -R ./ui/clef_teacher/build/linux/x64/release/bundle/* ./artifacts
-      - cd artifacts ; zip -r clef-teacher.zip ./ ; mv clef-teacher.zip ..
+      - cp target/clef-teacher-0.1.0-SNAPSHOT-standalone.jar ./artifacts/clef-teacher/backend.jar
+      - cp -R ./ui/clef_teacher/build/linux/x64/release/bundle/* ./artifacts/clef-teacher
+      - cd artifacts ; zip -r clef-teacher.zip ./clef-teacher ; mv clef-teacher.zip ..

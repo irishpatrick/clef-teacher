@@ -59,6 +59,7 @@ class _QuizState extends State<Quiz> {
   List<NoteImage> buildNoteImages() {
     var images = [
       NoteImage(
+        offset: 0.3,
         notePosition: NotePosition(
           note: _answer!.name,
           octave: _answer!.octave,
@@ -104,9 +105,7 @@ class _QuizState extends State<Quiz> {
     if (_stage == "loading") {
       return CircularProgressIndicator();
     } else if (_stage == "ready" && _answer != null) {
-      return SizedBox(
-        width: 600,
-        height: 200,
+      return Expanded(
         child: ClefImage(
           size: Size.infinite,
           clef: Clef.Bass,

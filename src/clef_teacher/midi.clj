@@ -53,7 +53,7 @@
                            (swap! notes assoc (.getData1 sm) :off)))))))
 
 (defn list-devices []
-  (map #(MidiSystem/getMidiDevice %) (MidiSystem/getMidiDeviceInfo)))
+  (filter (fn [^MidiDevice x] (not= (.getName (.getDeviceInfo x)) "Real Time Sequencer")) (map #(MidiSystem/getMidiDevice %) (MidiSystem/getMidiDeviceInfo))))
 
 (defn is-device-input [^MidiDevice dev]
   (or (= -1 (.getMaxTransmitters dev)) (> (.getMaxTransmitters dev) 0)))
