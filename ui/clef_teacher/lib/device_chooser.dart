@@ -1,6 +1,6 @@
 import 'package:clef_teacher/api.dart';
+import 'package:clef_teacher/secondary_text.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class DeviceChooser extends StatefulWidget {
   const DeviceChooser({super.key});
@@ -35,10 +35,7 @@ class _DeviceChooserState extends State<DeviceChooser> {
     } else if (_stage == "ready") {
       return Row(
         children: [
-          Text(
-            "MIDI Device",
-            style: GoogleFonts.averiaSerifLibre(fontSize: 20),
-          ),
+          SecondaryText("MIDI Device", fontSize: 20),
           Padding(padding: EdgeInsets.all(10)),
           DropdownButton(
             value: _current,
@@ -46,9 +43,9 @@ class _DeviceChooserState extends State<DeviceChooser> {
                 .map(
                   (x) => DropdownMenuItem<String>(
                     value: x,
-                    child: Text(
-                      x,
-                      style: GoogleFonts.averiaSerifLibre(fontSize: 20),
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: SecondaryText(x, fontSize: 20),
                     ),
                   ),
                 )

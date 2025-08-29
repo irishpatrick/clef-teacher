@@ -92,6 +92,7 @@ class ClefPainter extends CustomPainter with EquatableMixin {
 
   @override
   void paint(Canvas canvas, Size size) {
+    _accidentalSymbolPainters.clear();
     final bounds = padding.deflateRect(Offset.zero & size);
 
     if (bounds.height <= 0) {
@@ -228,8 +229,8 @@ class ClefPainter extends CustomPainter with EquatableMixin {
               TextPainter(
                 text: TextSpan(
                   text: noteImage.notePosition.accidental.symbol,
-                  style: TextStyle(
-                    fontSize: ovalHeight * 2,
+                  style: GoogleFonts.notoMusic(
+                    fontSize: ovalHeight * 3,
                     color: noteImage.color ?? noteColor,
                   ),
                 ),
@@ -239,7 +240,7 @@ class ClefPainter extends CustomPainter with EquatableMixin {
 
         _accidentalSymbolPainters[noteImage.notePosition.accidental]?.paint(
           canvas,
-          ovalRect.topLeft.translate(-ovalHeight, -ovalHeight / 2),
+          ovalRect.topLeft.translate(-ovalHeight, -ovalHeight * 3.3),
         );
       }
     }
@@ -249,17 +250,13 @@ class ClefPainter extends CustomPainter with EquatableMixin {
     }
 
     final clefHeight = (firstLineY - lastLineY);
-    final clefSymbolOffset = (clef == Clef.Treble) ? 0.45 : 0.55;
+    final clefSymbolOffset = (clef == Clef.Treble) ? 0.45 : 0.49;
 
     if (_clefSymbolPainter == null || clefSize != _lastClefSize) {
-      final clefSymbolScale = (clef == Clef.Treble) ? 2.35 : 1.10;
+      final clefSymbolScale = (clef == Clef.Treble) ? 2.35 : 1.0;
       _clefSymbolPainter = TextPainter(
         text: TextSpan(
           text: clef.symbol,
-          // style: TextStyle(
-          //   fontSize: clefHeight * clefSymbolScale,
-          //   color: clefColor,
-          // ),
           style: GoogleFonts.notoMusic(
             fontSize: clefHeight * clefSymbolScale,
             color: clefColor,
