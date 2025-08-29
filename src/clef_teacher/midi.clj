@@ -8,21 +8,37 @@
 (defn midi-to-octave [midi-num]
   (int (inc (/ (- midi-num 24) 12))))
 
-(defn midi-to-notes [midi-num]
-  (str (get {0  "c"
-             1  "c#"
-             2  "d"
-             3  "d#"
-             4  "e"
-             5  "f"
-             6  "f#"
-             7  "g"
-             8  "g#"
-             9  "a"
-             10 "a#"
-             11 "b"}
-            (mod (- midi-num 24) 12))
-       (midi-to-octave midi-num)))
+(defn midi-to-notes
+  ([midi-num] (midi-to-notes midi-num (rand-nth [:sharp :flat])))
+  ([midi-num enharmonic]
+   (let [sharp {0  "c"
+                1  "c#"
+                2  "d"
+                3  "d#"
+                4  "e"
+                5  "f"
+                6  "f#"
+                7  "g"
+                8  "g#"
+                9  "a"
+                10 "a#"
+                11 "b"}
+         flat {0  "c"
+               1  "db"
+               2  "d"
+               3  "eb"
+               4  "e"
+               5  "f"
+               6  "gb"
+               7  "g"
+               8  "ab"
+               9  "a"
+               10 "bb"
+               11 "b"}]
+
+     (str (get (if (= enharmonic :sharp) sharp flat)
+               (mod (- midi-num 24) 12))
+          (midi-to-octave midi-num)))))
 
 (defn note-to-midi [note]
   (let [octave (:octave note)
@@ -30,16 +46,22 @@
         accidental (get {:sharp "#" :flat "b"} (:accidental note))
         index (get {"c"  0
                     "c#" 1
+                    "db" 1
                     "d"  2
                     "d#" 3
+                    "eb" 3
                     "e"  4
                     "f"  5
                     "f#" 6
+                    "gb" 6
                     "g"  7
                     "g#" 8
+                    "ab" 8
                     "a"  9
                     "a#" 10
-                    "b"  11} (str note-name accidental))]
+                    "bb" 10
+                    "b"  11
+                    "cb" 11} (str note-name accidental))]
     (+ index (+ (* octave 12) 12))))
 
 
