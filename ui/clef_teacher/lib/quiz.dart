@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'dart:math';
 
-import 'package:clef_teacher/high_score_dialog.dart';
 import 'package:clef_teacher/streak_tracker.dart';
 import 'package:clef_teacher/schema.dart';
 import 'package:flutter/material.dart';

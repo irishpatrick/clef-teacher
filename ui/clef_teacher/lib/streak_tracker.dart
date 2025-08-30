@@ -1,4 +1,3 @@
-import 'package:clef_teacher/high_score_dialog.dart';
 import 'package:clef_teacher/primary_text.dart';
 import 'package:clef_teacher/schema.dart';
 import 'package:clef_teacher/api.dart';
