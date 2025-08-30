@@ -3,7 +3,7 @@
             [clojure.java.io :as io])
   (:import (java.io File)))
 
-(def high-score-file "./test.edn")
+(def high-score-file "./scores.edn")
 
 (defn load-high-scores [^String fn]
   (try

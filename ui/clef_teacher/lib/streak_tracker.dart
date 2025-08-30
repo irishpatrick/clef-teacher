@@ -24,6 +24,7 @@ class _StreakTrackerState extends State<StreakTracker> {
       setState(() {
         _highScore = value;
         _stage = "ready";
+        _highScore ??= HighScore(name: "Empty", score: 0);
       });
     });
     super.initState();
@@ -86,7 +87,7 @@ class _StreakTrackerState extends State<StreakTracker> {
           PrimaryText("Current Streak:  $_playerBest", fontSize: 24),
           SizedBox(width: 32),
           PrimaryText(
-            "High Score:  ${_highScore!.score} -- ${_highScore!.name}",
+            "High Score:  ${_highScore!.score} - ${_highScore!.name}",
             fontSize: 24,
           ),
         ],

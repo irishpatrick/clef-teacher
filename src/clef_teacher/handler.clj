@@ -17,7 +17,6 @@
     (midi/open-device (midi/get-device-by-name (midi/list-input-devices (midi/list-devices)) (get params "device")))
     {:status 200}))
 
-
 (defn get-notes [req]
   {:headers {"Content-Type" "application/json"}
    :body    (json/write-str (midi/get-notes-state))})

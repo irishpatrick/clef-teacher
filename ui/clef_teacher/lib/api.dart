@@ -95,7 +95,11 @@ class Api {
       return null;
     }
 
-    return HighScore.fromJson(json.decode(resp.body));
+    try {
+      return HighScore.fromJson(json.decode(resp.body));
+    } on FormatException {
+      return null;
+    }
   }
 
   static Future<HighScore?> setHighScore(HighScore score) async {

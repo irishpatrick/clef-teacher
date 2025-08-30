@@ -64,7 +64,6 @@
                     "cb" 11} (str note-name accidental))]
     (+ index (+ (* octave 12) 12))))
 
-
 (def my-receiver (reify Receiver
                    (send [this mm timeStamp]
                      (when (instance? ShortMessage mm)

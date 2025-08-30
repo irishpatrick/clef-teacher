@@ -8,7 +8,6 @@
   (let [fm (vec (flatten m))]
     (vec (map #(vector (get fm %) (get fm (+ 2 %))) [0 1]))))
 
-
 (defn dot [a b]
   (if (and (seq a) (seq b))
     (+ (* (first a) (first b)) (dot (rest a) (rest b)))
@@ -20,7 +19,6 @@
 
 (defn shear-polygon [polygon m]
   (map #(mat-vec-mul (shear m) %) polygon))
-
 
 
 (defn translate-polygon [polygon x y]
