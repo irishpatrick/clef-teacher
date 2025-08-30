@@ -82,4 +82,39 @@ class Api {
 
     return MidiNote.fromJson(json.decode(resp.body));
   }
+
+  static Future<HighScore?> getHighScore() async {
+    final resp = await r.retry(
+      () => http
+          .get(Uri.parse('http://localhost:5050/api/high-score'))
+          .timeout(Duration(seconds: 5)),
+      retryIf: (e) => e is SocketException || e is TimeoutException,
+    );
+
+    if (resp.statusCode != 200) {
+      return null;
+    }
+
+    return HighScore.fromJson(json.decode(resp.body));
+  }
+
+  static Future<HighScore?> setHighScore(HighScore score) async {
+    final resp = await r.retry(
+      () => http
+          .post(
+            Uri.parse('http://localhost:5050/api/high-score'),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(<String, dynamic>{
+              'name': score.name,
+              'score': score.score,
+            }),
+          )
+          .timeout(Duration(seconds: 5)),
+      retryIf: (e) => e is SocketException || e is TimeoutException,
+    );
+
+    return score;
+  }
 }

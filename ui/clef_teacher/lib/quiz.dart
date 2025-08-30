@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:clef_teacher/high_score_dialog.dart';
+import 'package:clef_teacher/streak_tracker.dart';
 import 'package:clef_teacher/schema.dart';
 import 'package:flutter/material.dart';
 import 'package:clef_teacher/api.dart';
@@ -17,6 +20,7 @@ class _QuizState extends State<Quiz> {
   MidiNote? _answer;
   MidiNote? _guess;
   bool _waitingForGuess = true;
+  int _currentStreak = 0;
 
   void _startPolling() {
     Timer.periodic(const Duration(milliseconds: 100), (timer) {
@@ -34,8 +38,10 @@ class _QuizState extends State<Quiz> {
             timer.cancel();
             Timer(Duration(seconds: 1), () {
               if (_answer == _guess) {
+                // correct answer
                 Api.getRandomNote("f2", "e4").then((value) {
                   setState(() {
+                    ++_currentStreak;
                     _answer = value;
                     _guess = null;
                     _startPolling();
@@ -43,7 +49,9 @@ class _QuizState extends State<Quiz> {
                   });
                 });
               } else {
+                // incorrect answer
                 setState(() {
+                  _currentStreak = 0;
                   _guess = null;
                   _startPolling();
                   _waitingForGuess = true;
@@ -69,15 +77,18 @@ class _QuizState extends State<Quiz> {
     ];
 
     if (_guess != null) {
+      var shownGuess = _guess!.coerce(_answer!);
       images.insert(
         1,
         NoteImage(
-          color: _guess! == _answer! ? Colors.green : Colors.red,
+          color: _guess! == _answer!
+              ? Colors.green
+              : Theme.of(context).colorScheme.error,
           offset: 0.7,
           notePosition: NotePosition(
-            note: _guess!.name,
-            octave: _guess!.octave,
-            accidental: _guess!.accidental,
+            note: shownGuess.name,
+            octave: shownGuess.octave,
+            accidental: shownGuess.accidental,
           ),
         ),
       );
@@ -106,13 +117,18 @@ class _QuizState extends State<Quiz> {
       return CircularProgressIndicator();
     } else if (_stage == "ready" && _answer != null) {
       return Expanded(
-        child: ClefImage(
-          size: Size.infinite,
-          clef: Clef.Bass,
-          noteRange: NoteRange.forClefs([Clef.Treble, Clef.Bass]),
-          noteImages: buildNoteImages(),
-          clefColor: Colors.black,
-          noteColor: Colors.black,
+        child: Stack(
+          children: [
+            ClefImage(
+              size: Size.infinite,
+              clef: Clef.Bass,
+              noteRange: NoteRange.forClefs([Clef.Treble, Clef.Bass]),
+              noteImages: buildNoteImages(),
+              clefColor: Colors.black,
+              noteColor: Colors.black,
+            ),
+            StreakTracker(current: _currentStreak),
+          ],
         ),
       );
     } else {

@@ -1,5 +1,6 @@
 (ns clef-teacher.handler
   (:require [clef-teacher.midi :as midi]
+            [clef-teacher.scores :as scores]
             [clojure.data.json :as json]))
 
 (defn get-status [req]
@@ -28,3 +29,17 @@
         choice (+ min (rand-int (- max min)))]
     {:headers {"Content-Type" "application/json"}
      :body    (json/write-str (midi/parse-note (midi/midi-to-notes choice)))}))
+
+(defn get-highest-score [req]
+  {:headers {"Content-Type" "application/json"}
+   :body    (json/write-str (scores/get-highest-score))})
+
+(defn update-high-score [req]
+  (let [params (:params req)
+        name (get params "name")
+        score (get params "score")]
+    (if (not (and (some? name) (some? score)))
+      {:status 400}
+      (do
+        (scores/set-high-score name score)
+        {:status 200}))))
