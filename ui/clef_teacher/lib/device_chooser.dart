@@ -35,8 +35,6 @@ class _DeviceChooserState extends State<DeviceChooser> {
     } else if (_stage == "ready") {
       return Row(
         children: [
-          SecondaryText("MIDI Device", fontSize: 20),
-          Padding(padding: EdgeInsets.all(10)),
           DropdownButton(
             value: _current,
             items: _devices
@@ -44,7 +42,7 @@ class _DeviceChooserState extends State<DeviceChooser> {
                   (x) => DropdownMenuItem<String>(
                     value: x,
                     child: Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.all(4),
                       child: SecondaryText(x, fontSize: 20),
                     ),
                   ),

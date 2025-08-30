@@ -34,11 +34,20 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: theme.colorScheme.inversePrimary,
-          title: Center(child: PrimaryText("Clef Teacher", fontSize: 36)),
+          title: Center(
+            child: Row(
+              children: [
+                PrimaryText("Clef Teacher", fontSize: 36),
+                Expanded(child: Container()),
+                DeviceChooser(),
+                SizedBox(width: 10),
+              ],
+            ),
+          ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(children: [DeviceChooser(), Quiz()]),
+          padding: const EdgeInsets.all(24),
+          child: Column(children: [Quiz()]),
         ),
       ),
     );

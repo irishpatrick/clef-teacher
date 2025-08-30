@@ -250,10 +250,10 @@ class ClefPainter extends CustomPainter with EquatableMixin {
     }
 
     final clefHeight = (firstLineY - lastLineY);
-    final clefSymbolOffset = (clef == Clef.Treble) ? 0.45 : 0.49;
+    final clefSymbolOffset = (clef == Clef.Treble) ? 0.45 : 0.57;
 
     if (_clefSymbolPainter == null || clefSize != _lastClefSize) {
-      final clefSymbolScale = (clef == Clef.Treble) ? 2.35 : 1.0;
+      final clefSymbolScale = (clef == Clef.Treble) ? 2.35 : 1.1;
       _clefSymbolPainter = TextPainter(
         text: TextSpan(
           text: clef.symbol,
