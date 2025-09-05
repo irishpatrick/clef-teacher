@@ -1,8 +1,7 @@
 import 'dart:io';
 
-import 'package:clef_teacher/device_chooser.dart';
-import 'package:clef_teacher/primary_text.dart';
-import 'package:clef_teacher/quiz.dart';
+import 'package:clef_teacher/main_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:window_size/window_size.dart';
@@ -28,28 +27,6 @@ class MyApp extends StatelessWidget {
     var theme = ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
     );
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: theme,
-      home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: theme.colorScheme.inversePrimary,
-          title: Center(
-            child: Row(
-              children: [
-                PrimaryText("Clef Teacher", fontSize: 36),
-                Expanded(child: Container()),
-                DeviceChooser(),
-                SizedBox(width: 10),
-              ],
-            ),
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(24),
-          child: Column(children: [Quiz()]),
-        ),
-      ),
-    );
+    return MaterialApp(title: 'Flutter Demo', theme: theme, home: MainPage());
   }
 }

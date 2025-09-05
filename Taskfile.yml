@@ -18,4 +18,5 @@ tasks:
       - lein uberjar
       - cp target/clef-teacher-1.0.0-standalone.jar ./artifacts/clef-teacher/backend.jar
       - cp -R ./ui/clef_teacher/build/linux/x64/release/bundle/* ./artifacts/clef-teacher
+      - strip ./artifacts/clef-teacher/clef_teacher
       - cd artifacts ; zip -r clef-teacher.zip ./clef-teacher ; mv clef-teacher.zip ..

@@ -1,14 +1,16 @@
 # clef-teacher
 
-A Clojure library designed to ... well, that part is up to you.
-
 ## Usage
 
-FIXME
+A game to teach the notes on the bass clef.
+Connect a midi keyboard, then press the note shown on screen.
+
+## Screenshots
+![App screenshot](doc/demo.png)
 
 ## License
 
-Copyright © 2025 FIXME
+Copyright © 2025 Patrick Roche
 
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License 2.0 which is available at
